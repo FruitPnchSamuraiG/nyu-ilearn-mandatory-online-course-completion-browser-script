@@ -1,54 +1,55 @@
 # NYU iLearn Mandatory Online Course Completion Automation Browser Script
 
-This repository contains a small browser-side automation script for a repetitive NYU iLearn mandatory online course flow.
+This repository contains a lightweight browser script for automating a repetitive NYU iLearn mandatory online course flow.
 
-It runs inside the browser page itself, so it does not move your real system cursor and does not take over your mouse the way desktop automation tools do.
+The script runs directly inside the browser page. It does not move your real system cursor, does not take over your mouse, and does not require desktop-level automation tools.
 
-The script looks for:
+At a high level, it:
 
-- a `NEXT` button
-- an `OK` button that appears shortly after
+- finds a `NEXT` button
+- clicks it
+- waits 1 second
+- finds and clicks an `OK` button that appears afterward
+- repeats on a timer
 
-It clicks `NEXT`, waits 1 second, clicks `OK`, and repeats on a timer.
+In most cases, that is enough to move through the repetitive course flow. There may still be an occasional quiz, Q&A, acknowledgement screen, or other step where the user has to take over manually, but that should be relatively rare.
 
-There may still be a Q&A or other interaction somewhere in the flow where the user has to take over manually, but in practice that should be rare compared with the repetitive button-clicking path.
+## File
 
-## Files
+- `study_click_loop.js` - the browser-console automation script
 
-- `study_click_loop.js` - browser-console automation script
+## How To Run It
 
-## How To Use
-
-These instructions were written for Zen Browser, but they also apply to other Chromium- or Firefox-style browsers with DevTools.
+These instructions were written for Zen Browser, but the same basic approach works in other browsers with DevTools.
 
 1. Open the target NYU iLearn course page.
 2. Open DevTools with `F12` or `Ctrl+Shift+I`.
 3. Go to the `Console` tab.
-4. Copy the contents of `study_click_loop.js`.
+4. Open `study_click_loop.js` and copy its contents.
 5. Paste the script into the console and press Enter.
-6. Start the loop by running:
+6. Start the automation by running:
 
 ```js
 startStudyClickLoop()
 ```
 
-To stop the loop:
+To stop it:
 
 ```js
 stopStudyClickLoop()
 ```
 
-## Timing
+## Default Timing
 
-Default timing:
+The default loop is:
 
-- `NEXT` click
+- click `NEXT`
 - wait `1000ms`
-- `OK` click
-- wait until `10000ms` total have passed for the cycle
+- click `OK`
+- wait until `10000ms` total have passed in the cycle
 - repeat
 
-You can override the timing:
+You can override the timing if needed:
 
 ```js
 startStudyClickLoop({
@@ -58,23 +59,21 @@ startStudyClickLoop({
 })
 ```
 
-## What The Script Does
+## What The Script Handles
 
-- Searches for the `NEXT` button by class or visible button text
-- Searches for the `OK` button by class or visible button text
-- Looks through same-origin iframes too
-- Dispatches pointer and mouse click events directly in the page
-- Logs what it is doing in the browser console
+- Matches the `NEXT` button by class or visible text
+- Matches the `OK` button by class or visible text
+- Searches through same-origin iframes
+- Dispatches pointer and mouse events directly in the page
+- Logs activity in the browser console
 
 ## Limitations
 
-- If the site changes its HTML classes or button text, selectors may need to be updated
-- If the page uses a cross-origin iframe or closed shadow DOM, extra work may be needed
-- If a quiz, Q&A, acknowledgement prompt, or non-standard step appears, the user may need to take over manually for that part
+- If the site changes its HTML structure, class names, or button text, the selectors may need to be updated
+- If the page uses cross-origin iframes or closed shadow DOM, extra handling may be required
+- Some steps may still require manual user input
 
-## Console Output
-
-Expected log output looks like:
+## Example Console Output
 
 ```text
 [study-click-loop] loaded
